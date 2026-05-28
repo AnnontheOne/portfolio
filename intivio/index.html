@@ -62,14 +62,14 @@
     background: var(--surface);
     color: var(--text);
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: clamp(15px, 0.4vw + 11px, 22px);
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
   .container {
-    max-width: 980px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 32px;
     position: relative;
@@ -86,14 +86,14 @@
   }
 
   .topbar-inner {
-    max-width: 980px;
+    max-width: 1280px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 32px;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text);
   }
@@ -179,7 +179,7 @@
   h1.hero-name {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(48px, 7vw, 88px);
+    font-size: clamp(48px, 6vw + 14px, 120px);
     line-height: 1.02;
     letter-spacing: -0.035em;
     color: var(--text);
@@ -206,10 +206,10 @@
   }
 
   .hero-tagline {
-    max-width: 640px;
+    max-width: clamp(640px, 50vw, 820px);
     margin: 0 auto 40px;
     font-family: var(--font-body);
-    font-size: clamp(17px, 1.4vw, 19px);
+    font-size: clamp(17px, 0.7vw + 12px, 26px);
     line-height: 1.55;
     color: var(--text-muted);
     font-weight: 400;
@@ -224,7 +224,7 @@
     color: var(--surface);
     text-decoration: none;
     font-family: var(--font-display);
-    font-size: 15px;
+    font-size: clamp(15px, 0.3vw + 12px, 21px);
     font-weight: 600;
     letter-spacing: -0.005em;
     border-radius: 999px;
@@ -257,7 +257,7 @@
 
   .section-eyebrow {
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     margin-bottom: 14px;
@@ -268,7 +268,7 @@
   .section-title {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(32px, 4vw, 48px);
+    font-size: clamp(34px, 3vw + 16px, 72px);
     line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--text);
@@ -279,9 +279,9 @@
   .section-sub {
     text-align: center;
     color: var(--text-muted);
-    max-width: 560px;
+    max-width: clamp(560px, 45vw, 760px);
     margin: 0 auto 56px;
-    font-size: 16px;
+    font-size: clamp(15px, 0.45vw + 11px, 22px);
     line-height: 1.55;
   }
 
@@ -315,7 +315,7 @@
 
   .work-num {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     letter-spacing: 0.02em;
@@ -336,7 +336,7 @@
 
   .work-name {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: clamp(20px, 0.6vw + 16px, 30px);
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -346,7 +346,7 @@
 
   .work-desc {
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: clamp(14px, 0.4vw + 10px, 20px);
     color: var(--text-muted);
     line-height: 1.5;
   }
@@ -356,7 +356,7 @@
     align-items: center;
     gap: 18px;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     letter-spacing: 0.01em;
@@ -365,7 +365,7 @@
 
   .work-arrow {
     font-family: var(--font-mono);
-    font-size: 16px;
+    font-size: clamp(15px, 0.3vw + 12px, 20px);
     color: var(--text-muted);
     transition: transform 220ms, color 220ms;
   }
@@ -392,7 +392,7 @@
 
   .cap-tag {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: clamp(11px, 0.25vw + 9px, 16px);
     font-weight: 500;
     color: var(--text-muted);
     margin-bottom: 14px;
@@ -401,7 +401,7 @@
 
   .cap-title {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: clamp(20px, 0.6vw + 16px, 30px);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.025em;
@@ -411,7 +411,7 @@
 
   .cap-body {
     font-family: var(--font-body);
-    font-size: 14.5px;
+    font-size: clamp(14px, 0.4vw + 10px, 20px);
     color: var(--text-muted);
     line-height: 1.55;
     margin-bottom: 18px;
@@ -425,7 +425,7 @@
   .cap-list {
     list-style: none;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text);
   }
@@ -459,7 +459,7 @@
     gap: 10px 22px;
     justify-content: center;
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     letter-spacing: 0.01em;
@@ -477,7 +477,7 @@
 
   .cta-title {
     font-family: var(--font-display);
-    font-size: clamp(40px, 5.5vw, 64px);
+    font-size: clamp(40px, 4vw + 20px, 84px);
     line-height: 1.02;
     letter-spacing: -0.035em;
     font-weight: 700;
@@ -487,10 +487,10 @@
 
   .cta-sub {
     font-family: var(--font-body);
-    font-size: 17px;
+    font-size: clamp(16px, 0.5vw + 12px, 24px);
     color: var(--text-muted);
     line-height: 1.55;
-    max-width: 460px;
+    max-width: clamp(460px, 38vw, 640px);
     margin: 0 auto 40px;
   }
 
@@ -508,7 +508,7 @@
     padding: 14px 26px;
     text-decoration: none;
     font-family: var(--font-display);
-    font-size: 15px;
+    font-size: clamp(15px, 0.3vw + 12px, 21px);
     font-weight: 600;
     letter-spacing: -0.005em;
     border-radius: 999px;
@@ -541,7 +541,7 @@
     border-top: 1px solid var(--border);
     padding: 28px 0 34px;
     font-family: var(--font-body);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     display: flex;
@@ -708,7 +708,7 @@
 
   .move-num {
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: clamp(12px, 0.3vw + 9px, 18px);
     font-weight: 500;
     color: var(--text-muted);
     letter-spacing: 0.02em;
@@ -716,7 +716,7 @@
 
   .move-title {
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: clamp(20px, 0.6vw + 16px, 30px);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.025em;
@@ -726,7 +726,7 @@
 
   .move-body {
     font-family: var(--font-body);
-    font-size: 15.5px;
+    font-size: clamp(14px, 0.4vw + 10px, 20px);
     color: var(--text-muted);
     line-height: 1.6;
   }
