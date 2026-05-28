@@ -689,14 +689,14 @@
     user-select: none;
   }
   .jarvis-orb .ring-1 {
-    inset: 0;
-    width: 100%; height: 100%;
+    inset: 12.5%;
+    width: 75%; height: 75%;
     filter: drop-shadow(0 0 12px var(--jx-glow));
     animation: jx-spin 60s linear infinite;
   }
   .jarvis-orb .ring-2 {
-    width: 70%; height: 70%;
-    inset: 15%;
+    width: 52%; height: 52%;
+    inset: 24%;
     filter: drop-shadow(0 0 18px var(--jx-glow));
     mix-blend-mode: screen;
     animation: jx-spin-rev 40s linear infinite;
@@ -720,7 +720,7 @@
   /* Center wordmark logo with breathing */
   .jarvis-orb-logo {
     position: relative; z-index: 3;
-    width: 34%;
+    width: 50%;
     display: grid; place-items: center;
     animation: jx-breathe 4s ease-in-out infinite;
     pointer-events: none;
@@ -1323,24 +1323,6 @@
                   <text x="0" y="20" fill="#ffc478" font-size="9" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-84)">TGT</text>
                 </g>
               </svg>
-
-              <!-- Status flags at 4 corners -->
-              <div class="jarvis-orb-flag tl">
-                <span class="lbl">◀ NLU</span>
-                <span class="val">0.18s p50</span>
-              </div>
-              <div class="jarvis-orb-flag tr">
-                <span class="lbl">VISION ▶</span>
-                <span class="val">4 streams</span>
-              </div>
-              <div class="jarvis-orb-flag bl">
-                <span class="lbl">◀ MEMORY</span>
-                <span class="val">2.4M items</span>
-              </div>
-              <div class="jarvis-orb-flag br">
-                <span class="lbl">TOOLS ▶</span>
-                <span class="val">14 active</span>
-              </div>
 
               <!-- Center wordmark logo (breathing) -->
               <div class="jarvis-orb-logo">
