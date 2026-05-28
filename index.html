@@ -294,6 +294,13 @@
     font-weight: 500;
     color: var(--text-muted);
     letter-spacing: 0.02em;
+    transition: color 220ms ease, transform 220ms ease, font-weight 220ms ease;
+  }
+  .work-num.scrambling {
+    color: var(--secondary);
+    font-weight: 700;
+    transform: scale(1.18);
+    transform-origin: left center;
   }
 
   .work-main {
@@ -1949,16 +1956,18 @@
     });
 
     function scrambleNum(el, targetStr) {
-      const duration = 720;
-      const settleAt = 560;
-      const tickEvery = 48;
+      const duration = 1200;
+      const settleAt = 1000;
+      const tickEvery = 32;
       let lastTick = 0;
       const start = performance.now();
+      el.classList.add('scrambling');
 
       function frame(now) {
         const elapsed = now - start;
         if (elapsed >= settleAt) {
           el.textContent = targetStr;
+          el.classList.remove('scrambling');
           if (elapsed < duration) requestAnimationFrame(frame);
           return;
         }
