@@ -677,146 +677,153 @@
     display: grid; place-items: center;
     pointer-events: none;
   }
+  /* ===== Jarvis-main JarvisOrb port ===== */
   .jarvis-orb {
     position: relative;
-    width: min(520px, 88%);
+    width: min(420px, 88%);
     aspect-ratio: 1/1;
+  }
+  .jarvis-orb-inner {
+    position: absolute; inset: 0;
     display: grid; place-items: center;
+    animation: jx-breathe 4.4s ease-in-out infinite;
   }
-  .jarvis-orb .ring {
-    position: absolute;
-    pointer-events: none;
-    user-select: none;
-  }
-  .jarvis-orb .ring-1 {
-    inset: 12.5%;
-    width: 75%; height: 75%;
-    filter: drop-shadow(0 0 12px var(--jx-glow));
-    animation: jx-spin 60s linear infinite;
-  }
-  .jarvis-orb .ring-2 {
-    width: 52%; height: 52%;
-    inset: 24%;
-    filter: drop-shadow(0 0 18px var(--jx-glow));
-    mix-blend-mode: screen;
-    animation: jx-spin-rev 40s linear infinite;
-  }
-  @keyframes jx-spin { to { transform: rotate(360deg); } }
-  @keyframes jx-spin-rev { to { transform: rotate(-360deg); } }
-
   @keyframes jx-breathe {
     0%, 100% { transform: scale(1); }
     50%      { transform: scale(1.03); }
   }
+  @keyframes jx-spin     { to { transform: rotate(360deg); } }
+  @keyframes jx-spin-rev { to { transform: rotate(-360deg); } }
+  @keyframes jx-state-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.45; }
+  }
 
-  /* Compass SVG overlay (lubber + bearing pip) */
-  .jarvis-orb-svg {
+  /* Bloom halo */
+  .jarvis-orb-halo {
+    position: absolute; inset: -20%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--jx-soft), transparent 60%);
+    filter: blur(24px);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 56-bar voice ring */
+  .jarvis-orb-bars {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
+    color: var(--jx-accent);
+    opacity: 0.65;
+    z-index: 1;
     pointer-events: none;
+  }
+  .jarvis-orb-bars line {
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 3px var(--jx-glow));
+  }
+
+  /* Outer ring (ring1.png) */
+  .jarvis-orb .ring-1 {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 0 14px var(--jx-glow));
+    animation: jx-spin-rev 45s linear infinite;
+    opacity: 0.9;
+    pointer-events: none;
+    user-select: none;
     z-index: 2;
   }
 
-  /* Center wordmark logo with breathing */
-  .jarvis-orb-logo {
-    position: relative; z-index: 3;
-    width: 50%;
-    display: grid; place-items: center;
-    animation: jx-breathe 4s ease-in-out infinite;
-    pointer-events: none;
-  }
-  .jarvis-orb-logo::before {
-    content: "";
-    position: absolute; inset: -22% -8%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, var(--jx-soft), transparent 65%);
-    filter: blur(14px);
-    z-index: 0;
-  }
-  .jarvis-orb-logo img {
-    width: 100%; height: auto;
-    position: relative; z-index: 1;
-    filter: drop-shadow(0 0 10px var(--jx-glow)) drop-shadow(0 0 22px var(--jx-soft));
-  }
-
-  /* HDG readout (top) */
-  .jarvis-orb-hdg {
-    position: absolute; top: 5%; left: 50%;
-    transform: translateX(-50%);
-    padding: 3px 14px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(94, 215, 255, 0.45);
-    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--jx-accent);
-    letter-spacing: 0.08em;
-    z-index: 4;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  /* BRG + delta readout (bottom inside ring) */
-  .jarvis-orb-brg {
-    position: absolute; bottom: 7%; left: 50%;
-    transform: translateX(-50%);
-    display: flex; gap: 8px; align-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    z-index: 4;
-    pointer-events: none;
-  }
-  .jarvis-orb-brg .amber { color: var(--jx-amber); }
-  .jarvis-orb-brg .dim   { color: var(--jx-fg-3); }
-
-  /* CORE · ONLINE label (just below center) */
-  .jarvis-orb-label {
-    position: absolute; bottom: -1%; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
-    z-index: 4;
-    pointer-events: none;
-    text-align: center;
-    white-space: nowrap;
-  }
-  .jarvis-orb-label .lbl {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    color: var(--jx-accent);
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .jarvis-orb-label .uptime {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--jx-fg-3);
-  }
-
-  /* Status flags at 4 corners of the orb */
-  .jarvis-orb-flag {
+  /* Inner ring (ring2.png) — screen-blended */
+  .jarvis-orb .ring-2 {
     position: absolute;
-    display: flex; flex-direction: column; gap: 4px;
-    font-family: 'JetBrains Mono', monospace;
-    z-index: 4;
+    width: 56%; height: 56%;
+    filter: drop-shadow(0 0 16px var(--jx-glow));
+    mix-blend-mode: screen;
+    opacity: 0.85;
+    animation: jx-spin 26s linear infinite;
     pointer-events: none;
+    user-select: none;
+    z-index: 2;
   }
-  .jarvis-orb-flag.tl { top: 7%; left: 1%; align-items: flex-start; }
-  .jarvis-orb-flag.tr { top: 7%; right: 1%; align-items: flex-end; }
-  .jarvis-orb-flag.bl { bottom: 8%; left: 1%; align-items: flex-start; }
-  .jarvis-orb-flag.br { bottom: 8%; right: 1%; align-items: flex-end; }
-  .jarvis-orb-flag .lbl {
+
+  /* Hex backdrop behind wordmark (white silhouette) */
+  .jarvis-orb-hex {
+    position: absolute;
+    width: 50%; height: 50%;
+    filter:
+      brightness(0) invert(1)
+      drop-shadow(0 0 4px var(--jx-glow))
+      drop-shadow(0 0 10px var(--jx-soft));
+    opacity: 0.4;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    user-select: none;
+    z-index: 3;
+  }
+
+  /* Wordmark logo — pure white silhouette + layered cyan glow */
+  .jarvis-orb-wordmark {
+    position: relative;
+    width: 42%;
+    text-align: center;
+    z-index: 4;
+  }
+  .jarvis-orb-wordmark img {
+    width: 100%; height: auto;
+    filter:
+      brightness(0) invert(1)
+      drop-shadow(0 0 3px rgba(255, 255, 255, 0.9))
+      drop-shadow(0 0 8px var(--jx-glow))
+      drop-shadow(0 0 20px var(--jx-glow))
+      drop-shadow(0 0 32px var(--jx-soft));
+    user-select: none;
+  }
+
+  /* State label below */
+  .jarvis-orb-state {
+    position: absolute;
+    bottom: -9%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    z-index: 5;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .jarvis-orb-state .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--jx-amber);
+    box-shadow: 0 0 6px rgba(255, 196, 120, 0.6);
+    animation: jx-state-pulse 1.8s ease infinite;
+  }
+  .jarvis-orb-state .label {
+    color: var(--jx-amber);
     font-size: 10px;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.5em;
     text-transform: uppercase;
     font-weight: 500;
-    color: var(--jx-accent);
   }
-  .jarvis-orb-flag .val {
-    font-size: 10px;
-    color: var(--jx-fg-3);
+
+  /* Corner ticks at the four corners of the orb */
+  .jarvis-orb-tick {
+    position: absolute;
+    width: 6px; height: 6px;
+    background: var(--jx-fg-4);
+    opacity: 0.45;
+    z-index: 5;
+    pointer-events: none;
   }
+  .jarvis-orb-tick.tl { top: 0; left: 0; transform: translate(-50%, -50%); }
+  .jarvis-orb-tick.tr { top: 0; right: 0; transform: translate(50%, -50%); }
+  .jarvis-orb-tick.bl { bottom: 0; left: 0; transform: translate(-50%, 50%); }
+  .jarvis-orb-tick.br { bottom: 0; right: 0; transform: translate(50%, 50%); }
 
   /* Mode-specific overlays */
   .jarvis-panel {
@@ -1309,30 +1316,38 @@
           <!-- Rotating rings (always present) -->
           <div class="jarvis-rings" aria-hidden="true">
             <div class="jarvis-orb">
-              <img class="ring ring-1" src="assets/ring1.png" alt="" draggable="false">
-              <img class="ring ring-2" src="assets/ring2.png" alt="" draggable="false">
+              <div class="jarvis-orb-inner">
+                <!-- Bloom halo -->
+                <div class="jarvis-orb-halo"></div>
 
-              <!-- Compass overlay: lubber line (top) + bearing pip (target) -->
-              <svg class="jarvis-orb-svg" viewBox="0 0 520 520" aria-hidden="true">
-                <!-- Lubber line: cyan triangle pointing inward at top (heading indicator) -->
-                <polygon points="260,4 253,20 267,20" fill="#5fd7ff" style="filter: drop-shadow(0 0 4px rgba(94,215,255,0.45));"/>
-                <!-- Bearing pip: amber arrow on outer ring at +84° from heading (target marker) -->
-                <g transform="translate(510.6 233.7) rotate(84)">
-                  <polygon points="0,-9 7,6 -7,6" fill="#ffc478" stroke="rgba(0,0,0,0.6)" stroke-width="0.5"
-                    style="filter: drop-shadow(0 0 4px rgba(255,196,120,0.7));"/>
-                  <text x="0" y="20" fill="#ffc478" font-size="9" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-84)">TGT</text>
-                </g>
-              </svg>
+                <!-- 56-bar voice ring (populated by JS) -->
+                <svg class="jarvis-orb-bars" viewBox="0 0 420 420" preserveAspectRatio="xMidYMid meet"></svg>
 
-              <!-- Center wordmark logo (breathing) -->
-              <div class="jarvis-orb-logo">
-                <img src="assets/logo.png" alt="J.A.R.V.I.S — Just A Rather Very Intelligent System" draggable="false">
-              </div>
+                <!-- Outer ring -->
+                <img class="ring ring-1" src="assets/ring1.png" alt="" draggable="false">
 
-              <!-- CORE · ONLINE label -->
-              <div class="jarvis-orb-label">
-                <div class="lbl">CORE · ONLINE</div>
-                <div class="uptime">HX-2026.05 · UPTIME 14d 06:42:11</div>
+                <!-- Inner ring (screen-blended) -->
+                <img class="ring ring-2" src="assets/ring2.png" alt="" draggable="false">
+
+                <!-- Hex backdrop -->
+                <img class="jarvis-orb-hex" src="assets/hex.png" alt="" draggable="false">
+
+                <!-- Wordmark logo (pure white silhouette with cyan glow) -->
+                <div class="jarvis-orb-wordmark">
+                  <img src="assets/logo.png" alt="J.A.R.V.I.S." draggable="false">
+                </div>
+
+                <!-- State label -->
+                <div class="jarvis-orb-state">
+                  <span class="dot"></span>
+                  <span class="label">LISTENING</span>
+                </div>
+
+                <!-- Corner ticks -->
+                <span class="jarvis-orb-tick tl"></span>
+                <span class="jarvis-orb-tick tr"></span>
+                <span class="jarvis-orb-tick bl"></span>
+                <span class="jarvis-orb-tick br"></span>
               </div>
             </div>
           </div>
@@ -1820,6 +1835,47 @@
       };
       tick();
       setInterval(tick, 1000);
+    }
+
+    // 56-bar voice ring (ported from JarvisOrb.tsx)
+    const barsSvg = document.querySelector('.jarvis-orb-bars');
+    if (barsSvg) {
+      const BARS = 56;
+      const INNER = 196;
+      const CX = 210, CY = 210;
+      const NS = 'http://www.w3.org/2000/svg';
+      const bars = [];
+      for (let i = 0; i < BARS; i++) {
+        const a = (i / BARS) * Math.PI * 2 - Math.PI / 2;
+        const x1 = CX + Math.cos(a) * INNER;
+        const y1 = CY + Math.sin(a) * INNER;
+        const line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', x1.toFixed(2));
+        line.setAttribute('y1', y1.toFixed(2));
+        line.setAttribute('x2', x1.toFixed(2));
+        line.setAttribute('y2', y1.toFixed(2));
+        barsSvg.appendChild(line);
+        bars.push({ line, a, x1, y1 });
+      }
+      const startT = performance.now();
+      function frame(now) {
+        const t = (now - startT) / 1000;
+        for (let i = 0; i < BARS; i++) {
+          const { line, a, x1, y1 } = bars[i];
+          const phase = i * 0.36;
+          // LISTENING-style: medium amplitude, gentle continuous motion
+          const base = 0.22 + 0.18 * Math.sin(t * 3.2 + phase) * Math.cos(t * 1.1 + phase * 0.4);
+          const flick = 0.06 * Math.sin(t * 7 + i);
+          const amp = Math.max(0.08, Math.min(0.55, base + flick));
+          const outer = INNER + amp * 18;
+          const x2 = CX + Math.cos(a) * outer;
+          const y2 = CY + Math.sin(a) * outer;
+          line.setAttribute('x2', x2.toFixed(2));
+          line.setAttribute('y2', y2.toFixed(2));
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
     }
   })();
 </script>
