@@ -732,21 +732,22 @@
     display: grid; place-items: center;
   }
   .jarvis-orb .ring {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    filter: drop-shadow(0 0 16px var(--jx-glow));
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
   }
-  .jarvis-orb .ring-1 { animation: jx-spin 60s linear infinite; }
+  .jarvis-orb .ring-1 {
+    inset: 0;
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 0 12px var(--jx-glow));
+    animation: jx-spin 60s linear infinite;
+  }
   .jarvis-orb .ring-2 {
     width: 70%; height: 70%;
     inset: 15%;
+    filter: drop-shadow(0 0 18px var(--jx-glow));
+    mix-blend-mode: screen;
     animation: jx-spin-rev 40s linear infinite;
-  }
-  .jarvis-orb .ring-3 {
-    width: 46%; height: 46%;
-    inset: 27%;
-    animation: jx-spin 90s linear infinite;
-    opacity: 0.7;
   }
   @keyframes jx-spin { to { transform: rotate(360deg); } }
   @keyframes jx-spin-rev { to { transform: rotate(-360deg); } }
@@ -1278,70 +1279,8 @@
           <!-- Rotating rings (always present) -->
           <div class="jarvis-rings" aria-hidden="true">
             <div class="jarvis-orb">
-              <svg class="ring ring-1" viewBox="0 0 520 520">
-                <g fill="none" stroke="#5fd7ff">
-                  <!-- thin guide -->
-                  <circle cx="260" cy="260" r="252" stroke-opacity="0.25" stroke-width="1"/>
-                  <!-- main outer (dashed gaps) -->
-                  <circle cx="260" cy="260" r="244" stroke-width="1.5" stroke-opacity="0.85" stroke-dasharray="320 32 110 28 200 28 110 28"/>
-                  <!-- inner ring -->
-                  <circle cx="260" cy="260" r="228" stroke-width="2.5" stroke-opacity="0.7" stroke-dasharray="80 14 60 14 110 14 60 14 90 14 60 14 70 14 60 14"/>
-                  <!-- thin innermost -->
-                  <circle cx="260" cy="260" r="218" stroke-opacity="0.3" stroke-width="1"/>
-                </g>
-                <!-- tick segments at 0/90/180/270 -->
-                <g stroke="#5fd7ff" stroke-width="2" stroke-linecap="round" stroke-opacity="0.85">
-                  <line x1="260" y1="8"   x2="260" y2="22"/>
-                  <line x1="512" y1="260" x2="498" y2="260"/>
-                  <line x1="260" y1="512" x2="260" y2="498"/>
-                  <line x1="8"   y1="260" x2="22"  y2="260"/>
-                </g>
-                <!-- small notched dashes -->
-                <g stroke="#5fd7ff" stroke-width="1.2" stroke-opacity="0.7">
-                  <g transform="translate(260 260)">
-                    <g><line x1="0" y1="-258" x2="0" y2="-242"/></g>
-                    <g transform="rotate(15)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(30)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(45)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(60)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(75)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(180)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(195)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(210)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(225)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                    <g transform="rotate(240)"><line x1="0" y1="-258" x2="0" y2="-244"/></g>
-                  </g>
-                </g>
-                <!-- dots at corners -->
-                <g fill="#5fd7ff">
-                  <circle cx="100" cy="80"  r="3"/>
-                  <circle cx="106" cy="80"  r="3"/>
-                  <circle cx="500" cy="262" r="3"/>
-                  <circle cx="500" cy="270" r="3"/>
-                  <circle cx="160" cy="440" r="3"/>
-                  <circle cx="166" cy="440" r="3"/>
-                </g>
-              </svg>
-
-              <svg class="ring ring-2" viewBox="0 0 360 360">
-                <g fill="none" stroke="#5fd7ff">
-                  <circle cx="180" cy="180" r="170" stroke-width="3" stroke-opacity="0.85"/>
-                  <circle cx="180" cy="180" r="158" stroke-width="1.2" stroke-opacity="0.55"/>
-                </g>
-                <!-- small notch blocks at 4 cardinals -->
-                <g fill="#5fd7ff" fill-opacity="0.85">
-                  <rect x="174" y="2"   width="12" height="10"/>
-                  <rect x="348" y="174" width="10" height="12"/>
-                  <rect x="174" y="348" width="12" height="10"/>
-                  <rect x="2"   y="174" width="10" height="12"/>
-                </g>
-              </svg>
-
-              <svg class="ring ring-3" viewBox="0 0 240 240">
-                <g fill="none" stroke="#5fd7ff" stroke-opacity="0.4">
-                  <circle cx="120" cy="120" r="116" stroke-width="0.8" stroke-dasharray="3 5"/>
-                </g>
-              </svg>
+              <img class="ring ring-1" src="../assets/ring1.png" alt="" draggable="false">
+              <img class="ring ring-2" src="../assets/ring2.png" alt="" draggable="false">
 
               <div class="jarvis-orb-text">
                 <div class="jarvis-orb-name">J.A.R.V.I.S</div>
