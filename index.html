@@ -679,7 +679,7 @@
   }
   .jarvis-orb {
     position: relative;
-    width: min(440px, 80%);
+    width: min(520px, 88%);
     aspect-ratio: 1/1;
     display: grid; place-items: center;
   }
@@ -704,41 +704,118 @@
   @keyframes jx-spin { to { transform: rotate(360deg); } }
   @keyframes jx-spin-rev { to { transform: rotate(-360deg); } }
 
-  .jarvis-orb-text {
-    position: relative; z-index: 2;
-    text-align: center;
-    animation: jx-breathe 4s ease-in-out infinite;
-  }
   @keyframes jx-breathe {
     0%, 100% { transform: scale(1); }
     50%      { transform: scale(1.03); }
   }
-  .jarvis-orb-name {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 800;
-    font-size: 28px;
-    letter-spacing: 0.18em;
-    color: var(--jx-fg);
-    text-shadow: 0 0 12px var(--jx-glow);
-    margin-bottom: 6px;
+
+  /* Compass SVG overlay (lubber + bearing pip) */
+  .jarvis-orb-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2;
   }
-  .jarvis-orb-sub {
+
+  /* Center wordmark logo with breathing */
+  .jarvis-orb-logo {
+    position: relative; z-index: 3;
+    width: 50%;
+    display: grid; place-items: center;
+    animation: jx-breathe 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .jarvis-orb-logo::before {
+    content: "";
+    position: absolute; inset: -22% -8%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, var(--jx-soft), transparent 65%);
+    filter: blur(14px);
+    z-index: 0;
+  }
+  .jarvis-orb-logo img {
+    width: 100%; height: auto;
+    position: relative; z-index: 1;
+    filter: drop-shadow(0 0 10px var(--jx-glow)) drop-shadow(0 0 22px var(--jx-soft));
+  }
+
+  /* HDG readout (top) */
+  .jarvis-orb-hdg {
+    position: absolute; top: 5%; left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 14px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(94, 215, 255, 0.45);
+    clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--jx-fg-3);
-    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--jx-accent);
+    letter-spacing: 0.08em;
+    z-index: 4;
+    pointer-events: none;
+    white-space: nowrap;
   }
-  .jarvis-orb-state {
-    display: inline-flex; align-items: center; gap: 6px;
+
+  /* BRG + delta readout (bottom inside ring) */
+  .jarvis-orb-brg {
+    position: absolute; bottom: 7%; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 8px; align-items: center;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.16em;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .jarvis-orb-brg .amber { color: var(--jx-amber); }
+  .jarvis-orb-brg .dim   { color: var(--jx-fg-3); }
+
+  /* CORE · ONLINE label (just below center) */
+  .jarvis-orb-label {
+    position: absolute; bottom: -1%; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    z-index: 4;
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .jarvis-orb-label .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
     color: var(--jx-accent);
-    padding: 4px 10px;
-    border: 1px solid rgba(94, 215, 255, 0.3);
-    background: var(--jx-soft);
-    border-radius: 999px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .jarvis-orb-label .uptime {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--jx-fg-3);
+  }
+
+  /* Status flags at 4 corners of the orb */
+  .jarvis-orb-flag {
+    position: absolute;
+    display: flex; flex-direction: column; gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .jarvis-orb-flag.tl { top: 7%; left: 1%; align-items: flex-start; }
+  .jarvis-orb-flag.tr { top: 7%; right: 1%; align-items: flex-end; }
+  .jarvis-orb-flag.bl { bottom: 8%; left: 1%; align-items: flex-start; }
+  .jarvis-orb-flag.br { bottom: 8%; right: 1%; align-items: flex-end; }
+  .jarvis-orb-flag .lbl {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--jx-accent);
+  }
+  .jarvis-orb-flag .val {
+    font-size: 10px;
+    color: var(--jx-fg-3);
   }
 
   /* Mode-specific overlays */
@@ -1062,8 +1139,11 @@
     .jarvis-rail-btn { font-size: 0; padding: 12px 0; }
     .jarvis-rail-btn svg { width: 18px; height: 18px; }
     .jarvis-stage { min-height: 460px; }
-    .jarvis-orb { width: 280px; }
-    .jarvis-orb-name { font-size: 20px; }
+    .jarvis-orb { width: 92%; max-width: 360px; }
+    .jarvis-orb-hdg { font-size: 11px; padding: 2px 10px; }
+    .jarvis-orb-flag .lbl, .jarvis-orb-flag .val { font-size: 9px; }
+    .jarvis-orb-label .lbl, .jarvis-orb-label .uptime { font-size: 9px; }
+    .jarvis-orb-brg { font-size: 9px; }
     .jx-core { width: auto; max-width: none; left: 20px; right: 20px; top: auto; bottom: 14px; height: 180px; }
     .jx-agents { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); }
     .jx-cockpit { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
@@ -1232,10 +1312,55 @@
               <img class="ring ring-1" src="assets/ring1.png" alt="" draggable="false">
               <img class="ring ring-2" src="assets/ring2.png" alt="" draggable="false">
 
-              <div class="jarvis-orb-text">
-                <div class="jarvis-orb-name">J.A.R.V.I.S</div>
-                <div class="jarvis-orb-sub">JUST · A · RATHER · VERY · INTELLIGENT · SYSTEM</div>
-                <div class="jarvis-orb-state"><span class="jx-pulse"></span> ACTIVE · LISTENING</div>
+              <!-- Compass overlay: lubber line (top) + bearing pip (target) -->
+              <svg class="jarvis-orb-svg" viewBox="0 0 520 520" aria-hidden="true">
+                <!-- Lubber line: cyan triangle pointing inward at top (heading indicator) -->
+                <polygon points="260,4 253,20 267,20" fill="#5fd7ff" style="filter: drop-shadow(0 0 4px rgba(94,215,255,0.45));"/>
+                <!-- Bearing pip: amber arrow on outer ring at +84° from heading (target marker) -->
+                <g transform="translate(510.6 233.7) rotate(84)">
+                  <polygon points="0,-9 7,6 -7,6" fill="#ffc478" stroke="rgba(0,0,0,0.6)" stroke-width="0.5"
+                    style="filter: drop-shadow(0 0 4px rgba(255,196,120,0.7));"/>
+                  <text x="0" y="20" fill="#ffc478" font-size="9" font-family="JetBrains Mono, monospace" text-anchor="middle" transform="rotate(-84)">TGT</text>
+                </g>
+              </svg>
+
+              <!-- HDG readout (top, clipped polygon panel) -->
+              <div class="jarvis-orb-hdg">HDG 034°</div>
+
+              <!-- Status flags at 4 corners -->
+              <div class="jarvis-orb-flag tl">
+                <span class="lbl">◀ NLU</span>
+                <span class="val">0.18s p50</span>
+              </div>
+              <div class="jarvis-orb-flag tr">
+                <span class="lbl">VISION ▶</span>
+                <span class="val">4 streams</span>
+              </div>
+              <div class="jarvis-orb-flag bl">
+                <span class="lbl">◀ MEMORY</span>
+                <span class="val">2.4M items</span>
+              </div>
+              <div class="jarvis-orb-flag br">
+                <span class="lbl">TOOLS ▶</span>
+                <span class="val">14 active</span>
+              </div>
+
+              <!-- Center wordmark logo (breathing) -->
+              <div class="jarvis-orb-logo">
+                <img src="assets/logo.png" alt="J.A.R.V.I.S — Just A Rather Very Intelligent System" draggable="false">
+              </div>
+
+              <!-- BRG + delta readout (bottom inside ring) -->
+              <div class="jarvis-orb-brg">
+                <span class="amber">BRG 118°</span>
+                <span class="dim">·</span>
+                <span class="dim">Δ+84°</span>
+              </div>
+
+              <!-- CORE · ONLINE label -->
+              <div class="jarvis-orb-label">
+                <div class="lbl">CORE · ONLINE</div>
+                <div class="uptime">HX-2026.05 · UPTIME 14d 06:42:11</div>
               </div>
             </div>
           </div>
