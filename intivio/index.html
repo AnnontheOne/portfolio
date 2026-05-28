@@ -1992,20 +1992,53 @@
     update();
   })();
 
-  // Work items: staggered entry as each scrolls into view
+  // Work items: staggered entry + number scramble as each scrolls into view
   (() => {
     const items = document.querySelectorAll('.work-item');
     if (!items.length) return;
+
     items.forEach((el, i) => {
       el.classList.add('lift');
       el.style.transitionDelay = (i * 80) + 'ms';
+      const numEl = el.querySelector('.work-num');
+      if (numEl) numEl.dataset.target = numEl.textContent.trim();
     });
-    const workIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          workIO.unobserve(e.target);
+
+    function scrambleNum(el, targetStr) {
+      const duration = 720;
+      const settleAt = 560;
+      const tickEvery = 48;
+      let lastTick = 0;
+      const start = performance.now();
+
+      function frame(now) {
+        const elapsed = now - start;
+        if (elapsed >= settleAt) {
+          el.textContent = targetStr;
+          if (elapsed < duration) requestAnimationFrame(frame);
+          return;
         }
+        if (now - lastTick >= tickEvery) {
+          const r = Math.floor(Math.random() * 100);
+          el.textContent = String(r).padStart(2, '0');
+          lastTick = now;
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    const workIO = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('visible');
+        const numEl = e.target.querySelector('.work-num');
+        if (numEl) {
+          const target = numEl.dataset.target || numEl.textContent.trim();
+          const i = Array.from(items).indexOf(e.target);
+          setTimeout(() => scrambleNum(numEl, target), Math.max(0, i) * 80);
+        }
+        workIO.unobserve(e.target);
       });
     }, { threshold: 0.18 });
     items.forEach(el => workIO.observe(el));
