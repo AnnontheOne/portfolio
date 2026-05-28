@@ -542,6 +542,24 @@
   }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+  /* Section title wipe reveal — clip-path opens upward as the parent
+     .fade-in section becomes visible. Uses `backwards` fill so titles
+     stay visible by default if JS / IntersectionObserver never fires. */
+  .fade-in.visible .section-title,
+  .fade-in.visible .cta-title {
+    animation: titleWipe 1100ms cubic-bezier(.2, .8, .2, 1) 250ms backwards;
+  }
+  @keyframes titleWipe {
+    0% {
+      clip-path: inset(105% -10% -15% -10%);
+      transform: translateY(10px);
+    }
+    100% {
+      clip-path: inset(-15% -10% -15% -10%);
+      transform: translateY(0);
+    }
+  }
+
   /* Scroll progress indicator */
   .scroll-progress {
     position: fixed;
