@@ -7,12 +7,23 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&family=Inconsolata:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  (function(){
+    try {
+      var s = localStorage.getItem('theme');
+      var p = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var t = s || (p ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 <style>
   :root {
     --primary: #0C0C09;
     --secondary: #312C85;
     --surface: #F4F4F1;
     --surface-2: #EAE9E2;
+    --surface-blur: rgba(244, 244, 241, 0.88);
     --text: #0C0C09;
     --text-muted: #6B6A60;
     --border: rgba(12, 12, 9, 0.10);
@@ -26,6 +37,22 @@
     --font-body: 'Open Sans', sans-serif;
     --font-display: 'Inter', sans-serif;
     --font-mono: 'Inconsolata', monospace;
+  }
+
+  :root[data-theme="dark"] {
+    --primary: #F4F4F1;
+    --secondary: #A8A2FF;
+    --surface: #0C0C09;
+    --surface-2: #16161A;
+    --surface-blur: rgba(12, 12, 9, 0.88);
+    --text: #F4F4F1;
+    --text-muted: #8E8D85;
+    --border: rgba(244, 244, 241, 0.10);
+    --border-strong: rgba(244, 244, 241, 0.22);
+  }
+
+  body, .topbar, .cap, .work-item, .btn, footer {
+    transition: background-color 280ms ease, color 280ms ease, border-color 280ms ease;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -53,7 +80,7 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(244, 244, 241, 0.88);
+    background: var(--surface-blur);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
@@ -1298,6 +1325,82 @@
   }
   .jarvis-desc-body strong { color: var(--jx-fg); font-weight: 600; }
 
+  /* ===== THEME TOGGLE (bottom-right) ===== */
+  .theme-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 64px;
+    height: 34px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-strong);
+    padding: 3px;
+    cursor: pointer;
+    z-index: 80;
+    display: inline-flex;
+    align-items: center;
+    transition:
+      background-color 280ms ease,
+      border-color 280ms ease,
+      transform 200ms cubic-bezier(.2,.8,.2,1),
+      box-shadow 200ms ease;
+    box-shadow: 0 4px 14px -6px rgba(12, 12, 9, 0.18);
+  }
+  .theme-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px -6px rgba(12, 12, 9, 0.28);
+  }
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 3px;
+  }
+
+  .theme-toggle-thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 1px 3px rgba(12, 12, 9, 0.18);
+    transition: transform 360ms cubic-bezier(.5, 1.4, .4, 1), background-color 280ms ease;
+    color: var(--text);
+  }
+  :root[data-theme="dark"] .theme-toggle-thumb {
+    transform: translateX(30px);
+  }
+
+  .theme-toggle-thumb svg {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .theme-toggle-thumb .icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+  .theme-toggle-thumb .icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+  :root[data-theme="dark"] .theme-toggle-thumb .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+  :root[data-theme="dark"] .theme-toggle-thumb .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 340ms;
+    animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+  }
+
   /* ===== RESPONSIVE ===== */
   @media (max-width: 760px) {
     .container { padding: 0 22px; }
@@ -1330,6 +1433,8 @@
     .jarvis-desc { grid-template-columns: 1fr; gap: 10px; padding: 14px 18px; }
     .jarvis-topbar { padding: 8px 12px; flex-wrap: wrap; gap: 6px; }
     .jarvis-meta { display: none; }
+
+    .theme-toggle { bottom: 18px; right: 18px; }
   }
 </style>
 </head>
@@ -2159,7 +2264,47 @@
       requestAnimationFrame(frame);
     }
   })();
+
+  // Theme toggle (light/dark)
+  (() => {
+    const btn = document.querySelector('.theme-toggle');
+    if (!btn) return;
+    const root = document.documentElement;
+
+    btn.addEventListener('click', () => {
+      const cur = root.getAttribute('data-theme') || 'light';
+      const next = cur === 'dark' ? 'light' : 'dark';
+      const apply = () => {
+        root.setAttribute('data-theme', next);
+        try { localStorage.setItem('theme', next); } catch (e) {}
+        btn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+      };
+      if (document.startViewTransition) {
+        document.startViewTransition(apply);
+      } else {
+        apply();
+      }
+    });
+
+    btn.setAttribute('aria-pressed',
+      (root.getAttribute('data-theme') === 'dark') ? 'true' : 'false');
+  })();
 </script>
+
+<!-- Theme toggle -->
+<button class="theme-toggle" type="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false">
+  <span class="theme-toggle-thumb">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </span>
+</button>
 
 </body>
 </html>
