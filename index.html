@@ -159,6 +159,27 @@
     margin-bottom: 24px;
   }
 
+  /* Override the generic .reveal animation for the hero name so it also
+     pulls letter-spacing from spread to tight as it lands. */
+  h1.hero-name.reveal {
+    animation: heroNameIn 1100ms cubic-bezier(.2,.8,.2,1) 150ms forwards;
+  }
+  @keyframes heroNameIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+      letter-spacing: 0.14em;
+    }
+    60% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      letter-spacing: -0.035em;
+    }
+  }
+
   .hero-tagline {
     max-width: 640px;
     margin: 0 auto 40px;
